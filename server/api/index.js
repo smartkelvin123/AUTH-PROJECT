@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const colors = require("colors");
 require("dotenv").config();
+const userRoutes = require("./routes/user");
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -10,6 +11,8 @@ const MONGO_URI = process.env.MONGO_URI;
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+app.use("/api/user", userRoutes);
 
 mongoose
   .connect(MONGO_URI)
