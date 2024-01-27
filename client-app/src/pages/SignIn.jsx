@@ -1,11 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
-  return (
-    <div>
-      <h1>smart-SignIn</h1>
-    </div>
-  );
+  return <div>smart-signin</div>;
 };
 
 export default SignIn;
