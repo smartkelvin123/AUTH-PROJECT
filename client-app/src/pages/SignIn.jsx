@@ -31,12 +31,12 @@ const SignIn = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      dispatch(signInSuccess(data));
       if (data.success === false) {
         dispatch(signInFailure(data.message));
 
         return;
       }
+      dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
       dispatch(signInFailure(error));
@@ -75,7 +75,9 @@ const SignIn = () => {
           <span className="text-blue-500">Sign up</span>
         </Link>
       </div>
-      <p className="text-red-700 mt-5">{error && "Something went wrong!"}</p>
+      <p className="text-red-700 mt-5">
+        {error ? error.message || "Something went wrong!" : ""}
+      </p>
     </div>
   );
 };
