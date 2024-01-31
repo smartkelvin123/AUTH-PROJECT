@@ -1,4 +1,3 @@
-
 import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from 'react';
 import {
@@ -9,7 +8,6 @@ import {
 } from 'firebase/storage';
 import { app } from '../firebase';
 
-
 const Profile = () => {
   const fileRef = useRef(null);
   const [image, setImage] = useState(undefined);
@@ -18,16 +16,19 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
 
   const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
     if (image) {
       handleFileUpload(image);
     }
   }, [image]);
+
   const handleFileUpload = async (image) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name;
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, image);
+
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -45,6 +46,7 @@ const Profile = () => {
       }
     );
   };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -56,12 +58,6 @@ const Profile = () => {
           accept='image/*'
           onChange={(e) => setImage(e.target.files[0])}
         />
-        {/* 
-      firebase storage rules:  
-      allow read;
-      allow write: if
-      request.resource.size < 2 * 1024 * 1024 &&
-      request.resource.contentType.matches('image/.*') */}
         <img
           src={currentUser.profilePicture}
           alt='profile'
@@ -82,19 +78,33 @@ const Profile = () => {
         <input
           defaultValue={currentUser.username}
           type='text'
-@@ -31,9 +97,11 @@ export default function Profile() {
+          id='username'
+          placeholder='Username'
+          className='bg-slate-100 rounded-lg p-3'
+        />
+        <input
+          defaultValue={currentUser.email}
+          type='email'
+          id='email'
+          placeholder='Email'
+          className='bg-slate-100 rounded-lg p-3'
+        />
+        <input
+          type='password'
+          id='password'
           placeholder='Password'
           className='bg-slate-100 rounded-lg p-3'
         />
-        <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>update</button>
         <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
-          update
+          Update
         </button>
       </form>
-      <div className="flex justify-between mt-5">
       <div className='flex justify-between mt-5'>
         <span className='text-red-700 cursor-pointer'>Delete Account</span>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
     </div>
   );
+};
+
+export default Profile;
