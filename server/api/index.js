@@ -5,6 +5,7 @@ const colors = require("colors");
 require("dotenv").config();
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
+const CookieParser = require("cookie-parser");
 
 const PORT = 5000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -12,6 +13,7 @@ const MONGO_URI = process.env.MONGO_URI;
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(CookieParser());
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
