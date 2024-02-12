@@ -8,27 +8,28 @@ const authRoutes = require("./routes/auth");
 const CookieParser = require("cookie-parser");
 const path = require("path");
 
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "./client/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
-// app.get ('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, './client/dist/index.html'))
-// })
+const app = express(); // Define app here
 
 const PORT = 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
-const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(CookieParser());
 
+// Serve static files from the client/dist directory
+app.use(express.static(path.join(__dirname, "./client/dist")));
+
+// Handle all other routes by serving the index.html file
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
+// Define API routes
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
+// Error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
@@ -39,6 +40,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Connect to MongoDB and start the server
 mongoose
   .connect(MONGO_URI)
   .then((conn) => {
