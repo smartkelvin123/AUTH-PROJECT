@@ -6,6 +6,17 @@ require("dotenv").config();
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 const CookieParser = require("cookie-parser");
+const path = require("path");
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "./client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+// app.get ('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, './client/dist/index.html'))
+// })
 
 const PORT = 5000;
 const MONGO_URI = process.env.MONGO_URI;
