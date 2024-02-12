@@ -8,7 +8,9 @@ const authRoutes = require("./routes/auth");
 const CookieParser = require("cookie-parser");
 const path = require("path");
 
-const app = express(); // Define app here
+// const __dirname = path.resolve();
+
+const app = express();
 
 const PORT = 5000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -18,12 +20,16 @@ app.use(cors());
 app.use(CookieParser());
 
 // Serve static files from the client/dist directory
-app.use(express.static(path.join(__dirname, "./client/dist")));
+app.use(express.static(path.join(__dirname, "../../client-app/dist")));
 
 // Handle all other routes by serving the index.html file
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, ".//dist/index.html"));
+// });
 
 // Define API routes
 app.use("/api/user", userRoutes);
