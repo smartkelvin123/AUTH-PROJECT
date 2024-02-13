@@ -9,6 +9,7 @@ const Oauth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleGoogleClick = async () => {
+    //google redirect
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
